@@ -1,0 +1,48 @@
+  body,
+  html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #87ceeb; /* фон страницы - неба */
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+      sans-serif;
+  }
+
+  canvas {
+    display: block;
+    margin: 0 auto;
+    background-color: #000080; /* болото темно-синее */
+  }
+
+  #playButton {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    font-size: 20px;
+    background-color: #4caf50;
+    color: white;
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+      sans-serif;
+    width: 100px;
+    font-weight: 700;
+  }
+
+  #playButton:hover {
+    background-color: #00ca33;
+  }
+
+  #gameOverText {
+    display: none;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 30px;
+    color: white;
+    font-weight: bold;
+  }
