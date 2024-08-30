@@ -1,122 +1,152 @@
+import { lilyPads } from './game.js';
+import { createSplash } from './Splash.js';
+
 export class Frog {
-    constructor(canvas, ctx) {
+    constructor(canvas, ctx, splashes, setGameRunning) {
         this.canvas = canvas;
         this.ctx = ctx;
         this.width = 40;
         this.height = 50;
-        this.x = 0;
-        this.y = 0;
         this.vx = 0;
         this.vy = 0;
         this.jumpPower = -15;
         this.gravity = 0.5;
         this.speed = 5;
         this.isJumping = false;
+        this.jumpSound = new Audio('src/assets/sounds/8-bit-jump.mp3'); // звук прыжка
+        this.soundPlayed = false;
         this.isDrowned = false;
-        this.resetPosition();
+        this.splashes = splashes;
+        this.drownSound = new Audio('src/assets/sounds/8-bit-water-drop.wav'); // звук утопления
+        this.setGameRunning = setGameRunning; 
+
+        this.resetPosition();            
     }
 
     resetPosition() {
+        // Лягушка начинает с центральной кувшинки
         this.x = this.canvas.width / 2 - this.width / 2;
         this.y = this.canvas.height * 0.68 - this.height;
+        this.isDrowned = false;
+        this.vx = 0;
+        this.vy = 0;
     }
 
     // Логика рисования лягушки
     draw() {        
         if (this.isDrowned) return; // Не рисовать лягушку, если она утонула
 
-          // Цвет тела, положение на кувшинке и размер
-          ctx.fillStyle = "green";
-          ctx.fillRect(this.x, this.y, this.width, this.height);
+        const { ctx } = this;
 
-          // Глаза
-          ctx.fillStyle = "white";
-          ctx.fillRect(this.x + 5, this.y + 5, 10, 10);
-          ctx.fillRect(this.x + 25, this.y + 5, 10, 10);
+        // Цвет, форма
+        ctx.fillStyle = "green";
+        ctx.fillRect(this.x, this.y, this.width, this.height);
 
-          // Рот
-          ctx.fillStyle = "red";
-          ctx.fillRect(this.x + 10, this.y + 25, 20, 5);
+        // Глаза
+        ctx.fillStyle = "white";
+        ctx.fillRect(this.x + 5, this.y + 5, 10, 10);
+        ctx.fillRect(this.x + 25, this.y + 5, 10, 10);
 
-          // Ноги
-          ctx.fillStyle = "darkgreen";
-          ctx.fillRect(this.x - 10, this.y + 30, 10, 20);
-          ctx.fillRect(this.x + 40, this.y + 30, 10, 20); 
+        // Рот
+        ctx.fillStyle = "red";
+        ctx.fillRect(this.x + 10, this.y + 25, 20, 5);
+
+        // Ноги
+        ctx.fillStyle = "darkgreen";
+        ctx.fillRect(this.x - 10, this.y + 30, 10, 20);
+        ctx.fillRect(this.x + 40, this.y + 30, 10, 20); 
     }
 
     // Логика обновления позиции лягушки
     update() {        
         this.vy += this.gravity;
-          this.x += this.vx;
-          this.y += this.vy;
+        this.x += this.vx;
+        this.y += this.vy;
 
-          // Проверка на столкновение с кувшинками
-          let onLilyPad = false;
+        // Проверка на столкновение с кувшинками
+        let onLilyPad = false;
 
-          for (const lilyPad of lilyPads) {
-            if (              
-              this.y + this.height > lilyPad.y &&              
-              this.x + this.width > lilyPad.x &&              
-              this.x < lilyPad.x + lilyPad.width
+        for (const lilyPad of lilyPads) {
+            if (
+                this.y + this.height > lilyPad.y &&              
+                this.x + this.width > lilyPad.x &&              
+                this.x < lilyPad.x + lilyPad.width &&
+                this.y + this.height <= lilyPad.y + lilyPad.height
             ) {
-              // Если все условия выполнены, лягушка находится на кувшинке
-              onLilyPad = true;              
-              this.y = lilyPad.y - this.height;              
-              this.vy = 0;
-              // лягушка больше не прыгает
-              this.isJumping = false;
+                // Если все условия выполнены, лягушка находится на кувшинке
+                onLilyPad = true;
+                this.y = lilyPad.y - this.height;              
+                this.vy = 0;
+                this.isJumping = false; // Лягушка больше не прыгает
+                this.soundPlayed = false;  // Сбрасываем флаг, чтобы звук можно было проиграть снова
             }
-          }
+        }
 
-          // Если лягушка не на кувшинке и касается болота - она утонет
-          if (!onLilyPad && this.y + this.height > canvas.height * 0.7) {
+        // Если лягушка не на кувшинке и касается болота, то лягушка утонула
+        if (!onLilyPad && this.y + this.height > this.canvas.height * 0.7) {
             this.drown();
-          }
+        }
 
-          // Лягушка не должна выходить за границы экрана
-          if (this.x < 0) this.x = 0;
-          if (this.x + this.width > canvas.width)
-            this.x = canvas.width - this.width;
+        // Лягушка не должна выходить за границы экрана
+        if (this.x < 0) this.x = 0;
+        if (this.x + this.width > this.canvas.width) {
+            this.x = this.canvas.width - this.width;
+        }
     }
 
     // Метод для прыжка
     jump() {        
-        // Лягушка может прыгнуть только если она на кувшинке
         if (!this.isJumping) {
             this.vy = this.jumpPower;
             this.isJumping = true;
-          }
+
+            if (!this.soundPlayed) {  // Проверяем, был ли уже проигран звук
+                this.jumpSound.currentTime = 0; // сбрасываем время воспроизведения звука
+                this.jumpSound.play();
+                this.soundPlayed = true;  // звук проигран
+            }
+        }
     }
 
     // Движения влево, вправо, стоп
     moveLeft() {
         this.vx = -this.speed;
-      }
+    }
 
-      moveRight() {
+    moveRight() {
         this.vx = this.speed;
-      }
+    }
 
-      stop() {
+    stop() {
         this.vx = 0;
-      }
+    }
 
     // Логика утопления
     drown() {
-        // Сначала создаем всплеск воды, а затем скрываем лягушку
-        createSplash(this.x + this.width / 2, this.y + this.height);
+        // Создаем всплеск воды
+        createSplash(this.x + this.width / 2, this.y + this.height, this.splashes);
 
-        this.isDrowned = true;
+        this.isDrowned = true; // Лягушка утонула
+
+        // Воспроизводим звук утопления
+        if (!this.soundPlayed) {  // проверяем, был ли уже проигран звук
+            this.drownSound.currentTime = 0; // сбрасываем время воспроизведения звука
+            this.drownSound.play();
+            this.soundPlayed = true;  // звук проигран
+        }
+
         
-        setTimeout(() => {
-          
-          gameRunning = false; // Стоп игра с задержкой
+        // Остановка игры с задержкой
+        setTimeout(() => {            
 
-          // Показать текст - Game Over
-          document.getElementById("gameOverText").style.display = "block";
+            this.setGameRunning(false);
 
-          // Обновляем текст на кнопке c Pause на Play
-          document.getElementById("playButton").innerText = `${playText}`;
+            // Показать текст "Game Over"
+            document.getElementById("gameOverText").style.display = "block";
+
+            // Обновить текст кнопки на "Play"
+            document.getElementById("playButton").innerText = "Play";
+            this.resetPosition();
         }, 1000);
     }
 }
