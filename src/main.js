@@ -42,13 +42,8 @@ function removeInfoText() {
 }
 
 document.getElementById("playButton").addEventListener("click", () => {
-  if (!gameRunning) {
-    frog.x = lilyPads[1].x + lilyPads[1].width / 2 - frog.width / 2;
-    frog.y = lilyPads[1].y - frog.height;
-    frog.isDrowned = false;
-    score = 0;
+  if (!gameRunning) {   
     document.getElementById("gameOverText").style.display = "none";
-
     removeInfoText(); // Удаляем текст при старте игры
   }
   gameRunning = !gameRunning;
