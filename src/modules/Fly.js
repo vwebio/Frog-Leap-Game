@@ -5,32 +5,35 @@ export class Fly {
         this.width = 10;
         this.height = 10;
         this.x = Math.random() * canvas.width;
-        this.y = Math.random() * (canvas.height - 200);
-        this.vx = (Math.random() - 0.5) * 5;
-        this.vy = (Math.random() - 0.5) * 5;
+        this.y = Math.random() * (canvas.height - 200); // Летают в верхней части экрана
+        this.speedX = (Math.random() - 0.5) * 5; // Случайное горизонтальное движение
+        this.speedY = (Math.random() - 0.5) * 5; // Случайное вертикальное движение
     }
 
-    // Рисования мошки
-    draw() {        
+    // Мошка
+    draw() {
         // Тело
-        ctx.fillStyle = "black";
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        this.ctx.fillStyle = "black";
+        this.ctx.fillRect(this.x, this.y, this.width, this.height);
 
         // Крылья
-        ctx.fillStyle = "white";
+        this.ctx.fillStyle = "white";
         const wingOffset = Math.sin(Date.now() / 100) * 2; // Анимация взмахов крыльев
-        ctx.fillRect(this.x - wingOffset, this.y - 5, 5, 10);
-        ctx.fillRect(this.x + this.width + wingOffset, this.y - 5, 5, 10);
+        this.ctx.fillRect(this.x - wingOffset, this.y - 5, 5, 10);
+        this.ctx.fillRect(this.x + this.width + wingOffset, this.y - 5, 5, 10);
     }
 
-    // Обновления позиции мошки
-    update() {        
-        this.x += this.vx;
-          this.y += this.vy;
+    // Обновление позиции мошки
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
 
-          // Если мошка касается краев экрана, меняем направление
-          if (this.x < 0 || this.x + this.width > canvas.width) this.vx *= -1;
-          if (this.y < 0 || this.y + this.height > canvas.height - 100)
-            this.vy *= -1;
+        // Проверка границ экрана
+        if (this.x < 0 || this.x + this.width > this.canvas.width) {
+            this.speedX *= -1; // Отражение от стены
+        }
+        if (this.y < 0 || this.y + this.height > this.canvas.height * 0.7) { // Летают только в верхней части экрана
+            this.speedY *= -1; // Отражение от стены
+        }
     }
 }
