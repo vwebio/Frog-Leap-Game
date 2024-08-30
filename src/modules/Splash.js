@@ -1,5 +1,4 @@
 export class Splash {
-    // Конструктор класса Splash
     constructor(x, y) {
         this.x = x;
         this.y = y;
