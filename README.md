@@ -1,6 +1,6 @@
 # Frog Leap Game 🐸
 
-![Game Screenshot](.assets/frog-game-img-Duhv1tL3.jpg) 
+![Game Screenshot](assets/frog-game-img-Duhv1tL3.jpg) 
 
 ## Описание
 
