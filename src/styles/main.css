@@ -1,17 +1,36 @@
-  body,
+ body,
   html {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #87ceeb; /* фон страницы - неба */
+    background-color: #87ceeb; /* фон страницы */
     font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
       sans-serif;
+  }
+
+  .info {
+    color: white;
+    text-align: center;
+    position: relative;
+    top: 50px;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .hello-text {    
+    font-size: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  .info-text {
+    font-size: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   }
 
   canvas {
     display: block;
     margin: 0 auto;
-    background-color: #000080; /* болото темно-синее */
+    background-color: #87ceeb; /* фон неба */
   }
 
   #playButton {
