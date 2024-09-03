@@ -2,7 +2,7 @@ import { lilyPads } from './game.js';
 import { createSplash } from './Splash.js';
 
 export class Frog {
-    constructor(canvas, ctx, splashes, setGameRunning) {
+    constructor(canvas, ctx, splashes, setGameRunning, resetScore) {
         this.canvas = canvas;
         this.ctx = ctx;
         this.width = 40;
@@ -13,13 +13,13 @@ export class Frog {
         this.gravity = 0.5;
         this.speed = 5;
         this.isJumping = false;
-        this.jumpSound = new Audio('src/assets/sounds/8-bit-jump.mp3'); // звук прыжка
+        this.jumpSound = new Audio('./assets/8-bit-jump.mp3'); // звук прыжка
         this.soundPlayed = false;
         this.isDrowned = false;
         this.splashes = splashes;
-        this.drownSound = new Audio('src/assets/sounds/8-bit-water-drop.wav'); // звук утопления
+        this.drownSound = new Audio('./assets/8-bit-water-drop.wav'); // звук утопления
         this.setGameRunning = setGameRunning; 
-
+        this.resetScore = resetScore;
         this.resetPosition();            
     }
 
@@ -140,6 +140,11 @@ export class Frog {
         setTimeout(() => {            
 
             this.setGameRunning(false);
+
+            // Сбрасываем счёт после утопления
+            this.resetScore();
+
+            
 
             // Показать текст "Game Over"
             document.getElementById("gameOverText").style.display = "block";

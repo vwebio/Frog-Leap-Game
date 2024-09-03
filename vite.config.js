@@ -1,5 +1,15 @@
 import { defineConfig } from 'vite';
+import path from 'path';
 
 export default defineConfig({
-  base: '/<REPOSITORY_NAME>/',  // Укажите здесь имя вашего репозитория на GitHub
+  root: 'src',
+  base: '', 
+  build: {
+    outDir: '../dist',
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, 'src'),
+    },
+  },
 });

@@ -1,4 +1,4 @@
-import "../src/styles/main.css";
+import "./styles/main.css";
 import { Frog } from "./modules/Frog.js";
 import { Fly } from "./modules/Fly.js";
 import {
@@ -16,7 +16,7 @@ canvas.width = 800;
 canvas.height = 600;
 
 // Фоновая музыка
-const backgroundMusic = new Audio("src/assets/sounds/game-music.mp3");
+const backgroundMusic = new Audio("./assets/game-music.mp3");
 backgroundMusic.loop = true; // Устанавливаем цикл для музыки
 backgroundMusic.volume = 0.5; // Устанавливаем начальную громкость (от 0 до 1)
 
@@ -28,7 +28,7 @@ function setGameRunning(state) {
 }
 
 const splashes = []; // массив всплесков
-const frog = new Frog(canvas, ctx, splashes, setGameRunning); // передаем splashes в Frog
+const frog = new Frog(canvas, ctx, splashes, setGameRunning, resetScore); // передаем splashes в Frog
 const flies = Array.from({ length: 5 }, () => new Fly(canvas, ctx));
 
 let score = 0;
@@ -41,17 +41,19 @@ function removeInfoText() {
   }
 }
 
+// Функция для сброса счёта
+export function resetScore() {
+  score = 0;
+}
+
 document.getElementById("playButton").addEventListener("click", () => {
   if (!gameRunning) {
-    frog.x = lilyPads[1].x + lilyPads[1].width / 2 - frog.width / 2;
-    frog.y = lilyPads[1].y - frog.height;
-    frog.isDrowned = false;
-    score = 0;
+    
     document.getElementById("gameOverText").style.display = "none";
 
     removeInfoText(); // Удаляем текст при старте игры
   }
-  gameRunning = !gameRunning;
+  gameRunning = !gameRunning;  
 
   document.getElementById("playButton").innerText = gameRunning
     ? "Pause"
@@ -108,6 +110,7 @@ function gameLoop() {
   }
 
   requestAnimationFrame(gameLoop);
+  
 }
 
 gameLoop(); // Запуск игрового цикла
