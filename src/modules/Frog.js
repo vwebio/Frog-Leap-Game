@@ -14,10 +14,11 @@ export class Frog {
         this.speed = 5;
         this.isJumping = false;
         this.jumpSound = new Audio('./assets/8-bit-jump.mp3'); // звук прыжка
-        this.soundPlayed = false;
+        this.jumpSoundPlayed = false; // флаг звука прыжка
         this.isDrowned = false;
         this.splashes = splashes;
         this.drownSound = new Audio('./assets/8-bit-water-drop.wav'); // звук утопления
+        this.drownSoundPlayed = false; // флаг звука утопления
         this.setGameRunning = setGameRunning; 
         this.resetScore = resetScore;
         this.resetPosition();            
@@ -78,7 +79,9 @@ export class Frog {
                 this.y = lilyPad.y - this.height;              
                 this.vy = 0;
                 this.isJumping = false; // Лягушка больше не прыгает
-                this.soundPlayed = false;  // Сбрасываем флаг, чтобы звук можно было проиграть снова
+                // Сбрасываем флаг, чтобы звук можно было проиграть снова
+                this.jumpSoundPlayed = false;  
+                this.drownSoundPlayed = false;
             }
         }
 
@@ -100,10 +103,10 @@ export class Frog {
             this.vy = this.jumpPower;
             this.isJumping = true;
 
-            if (!this.soundPlayed) {  // Проверяем, был ли уже проигран звук
+            if (!this.jumpSoundPlayed) {  // Проверяем, был ли уже проигран звук
                 this.jumpSound.currentTime = 0; // сбрасываем время воспроизведения звука
                 this.jumpSound.play();
-                this.soundPlayed = true;  // звук проигран
+                this.jumpSoundPlayed = true;  // звук проигран
             }
         }
     }
@@ -129,10 +132,10 @@ export class Frog {
         this.isDrowned = true; // Лягушка утонула
 
         // Воспроизводим звук утопления
-        if (!this.soundPlayed) {  // проверяем, был ли уже проигран звук
+        if (!this.drownSoundPlayed) {  // проверяем, был ли уже проигран звук
             this.drownSound.currentTime = 0; // сбрасываем время воспроизведения звука
             this.drownSound.play();
-            this.soundPlayed = true;  // звук проигран
+            this.drownSoundPlayed = true;  // звук проигран
         }
 
         
