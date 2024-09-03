@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Frog Game</title>
+  </head>
+  <body>
+    <section class="section">
+      <button id="playButton">Play</button>
+
+      <div class="info">
+        <p class="hello-text">Добрый день!</p>
+        <p class="info-text">Игра позволяет вам играть за лягушку которая ловит мошек на болоте.</p>
+        <p class="info-text">Если лягушка упадет мимо кувшинок, игра будет зевершена.</p>
+        <p class="info-text">Для старта игры нажмите кнопку Play.</p>
+        <p class="info-text">Управление стрелками &larr; &uarr;  &rarr;</p>
+        <div><img src="./assets/frog-game-img.jpg" alt="Frog browser game" width="400"></div>
+      </div>
+      
+      <div id="gameOverText">Game Over</div>
+      
+      <canvas id="gameCanvas"></canvas>            
+
+    </section>
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>
