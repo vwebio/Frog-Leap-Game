@@ -29,7 +29,7 @@ function setGameRunning(state) {
 
 const splashes = []; // массив всплесков
 const frog = new Frog(canvas, ctx, splashes, setGameRunning, resetScore); // передаем splashes в Frog
-const flies = Array.from({ length: 5 }, () => new Fly(canvas, ctx));
+const flies = Array.from({ length: 5 }, () => new Fly(canvas, ctx)); // кол-во мошек
 
 let score = 0;
 
@@ -46,21 +46,24 @@ export function resetScore() {
   score = 0;
 }
 
+// Старт игры
 document.getElementById("playButton").addEventListener("click", () => {
   if (!gameRunning) {
     
     document.getElementById("gameOverText").style.display = "none";
 
-    removeInfoText(); // Удаляем текст при старте игры
+    removeInfoText(); // Удаляем текст описания при старте игры
   }
   gameRunning = !gameRunning;  
 
+  // Смена текста на кнопке 
   document.getElementById("playButton").innerText = gameRunning
     ? "Pause"
     : "Play";
   document.getElementById("playButton").blur();
 });
 
+// Управление персонажем
 document.addEventListener("keydown", (e) => {
   if (e.code === "ArrowLeft") frog.moveLeft();
   if (e.code === "ArrowRight") frog.moveRight();
@@ -74,6 +77,7 @@ document.addEventListener("keyup", (e) => {
   if (e.code === "ArrowLeft" || e.code === "ArrowRight") frog.stop();
 });
 
+// Запуск игрового цикла
 function gameLoop() {
   if (gameRunning) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);

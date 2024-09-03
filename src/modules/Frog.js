@@ -94,7 +94,7 @@ export class Frog {
         }
     }
 
-    // Метод для прыжка
+    // Прыжок
     jump() {        
         if (!this.isJumping) {
             this.vy = this.jumpPower;
@@ -143,7 +143,6 @@ export class Frog {
 
             // Сбрасываем счёт после утопления
             this.resetScore();
-
             
 
             // Показать текст "Game Over"

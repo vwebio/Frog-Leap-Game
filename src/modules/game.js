@@ -31,7 +31,7 @@ export function drawBackground(ctx, canvas) {
     ctx.arc(canvas.width - 100, 100, 50, 0, Math.PI * 2);
     ctx.fill();
 
-    // Облако 1 слева
+    // Облако слева
     ctx.fillStyle = "white";
     ctx.beginPath();
     ctx.arc(150, 100, 40, 0, Math.PI * 2);
@@ -39,7 +39,7 @@ export function drawBackground(ctx, canvas) {
     ctx.arc(250, 100, 40, 0, Math.PI * 2);
     ctx.fill();
 
-    // Облако 2 справа
+    // Облако справа
     ctx.fillStyle = "white";
     ctx.beginPath();
     ctx.arc(450, 150, 40, 0, Math.PI * 2);
@@ -65,7 +65,8 @@ export const lilyPads = [
 export function drawScore(ctx, score) {
     ctx.fillStyle = "white";
         ctx.font = "20px sans-serif";
-        ctx.fillText(`Score: ${score}`, 10, 30); // Заголовок Score, число 0, расположение на экране
+        // Заголовок Score, число 0, расположение на экране
+        ctx.fillText(`Score: ${score}`, 10, 30); 
 }
 
 // Проверка на столкновение лягушки и мошки
