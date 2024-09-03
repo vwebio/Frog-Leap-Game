@@ -1,4 +1,4 @@
-import { lilyPads } from './game.js';
+import { lilyPads } from './gameDraw.js';
 import { createSplash } from './Splash.js';
 
 export class Frog {

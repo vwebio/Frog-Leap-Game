@@ -7,7 +7,7 @@ import {
   drawLilyPads,
   drawScore,
   detectCollision,
-} from "./modules/game.js";
+} from "./modules/gameDraw.js";
 
 // Основная логика запуска игры
 const canvas = document.getElementById("gameCanvas");
