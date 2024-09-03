@@ -48,6 +48,7 @@ export function resetScore() {
 
 // Старт игры
 document.getElementById("playButton").addEventListener("click", () => {
+
   if (!gameRunning) {
     
     document.getElementById("gameOverText").style.display = "none";
